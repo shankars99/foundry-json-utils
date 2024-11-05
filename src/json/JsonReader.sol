@@ -27,32 +27,29 @@ abstract contract JsonReader is JsonBase {
         view
         returns (address lz_address)
     {
-        string memory json = getJson(_chain);
-        string memory protocol_contract_path = string.concat(".addresses.LAYERZERO.", _contractName);
+        string memory _path = string.concat(".addresses.LAYERZERO.", _contractName);
 
-        lz_address = json.readAddress(protocol_contract_path);
+        lz_address = getJson(_chain).readAddress(_path);
     }
 
-    function getAddressProtocol(string memory _chain, string memory _protocol, string memory _contractName)
+    function getAddressOAPP(string memory _chain, string memory _contractName)
+        internal
+        view
+        returns (address oapp_address)
+    {
+        string memory _path = string.concat(".addresses.OAPP.", _contractName);
+
+        oapp_address = getJson(_chain).readAddress(_path);
+    }
+
+    function getAddressProtocol(string memory _chain, string memory _contractName)
         internal
         view
         returns (address protocol_address)
     {
-        string memory json = getJson(_chain);
-        string memory protocol_contract_path = string.concat(".addresses.", _protocol, ".", _contractName);
+        string memory _path = string.concat(".addresses.PROTOCOL.", _contractName);
 
-        protocol_address = json.readAddress(protocol_contract_path);
-    }
-
-    function getAddressOAPP(string memory _chain, string memory _protocol, string memory _contractName)
-        internal
-        view
-        returns (address protocol_address)
-    {
-        string memory json = getJson(_chain);
-        string memory protocol_contract_path = string.concat(".addresses.", _protocol, ".OAPP_", _contractName);
-
-        protocol_address = json.readAddress(protocol_contract_path);
+        protocol_address = getJson(_chain).readAddress(_path);
     }
 
     function getAccount(string memory _chain, string memory _accountName) internal view returns (address account) {

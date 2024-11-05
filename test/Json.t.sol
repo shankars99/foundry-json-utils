@@ -2,7 +2,7 @@
 pragma solidity ^0.8.13;
 
 import {Test, console} from "forge-std/Test.sol";
-import {LZUtils} from "../src/LZUtils.sol";
+import {LZUtils} from "@/LZUtils.sol";
 
 contract CounterTest is Test, LZUtils {
     string constant chainName = "ETHEREUM";
@@ -11,6 +11,7 @@ contract CounterTest is Test, LZUtils {
     uint256 constant eid = 301011;
 
     address constant LZ_ENDPOINT_V2 = 0x1a44076050125825900e736c501f859c50fE728c;
+    address constant OAPP_OFT_ADAPTER = 0x0000000000000000000000000000000000000000;
     address constant PROTOCOL_ERC20 = 0x643C4E15d7d62Ad0aBeC4a9BD4b001aA3Ef52d66;
 
     address constant sender = 0x36e83766531BA57a30373EFF061186619CA46FA1;
@@ -38,8 +39,12 @@ contract CounterTest is Test, LZUtils {
         assertEq(LZ_ENDPOINT_V2, getAddressLZ(chainName, "ENDPOINT_V2"));
     }
 
+    function test_OAPP() public view {
+        assertEq(OAPP_OFT_ADAPTER, getAddressProtocol(chainName, "OFT_ADAPTER"));
+    }
+
     function test_getProtocolERC20() public view {
-        assertEq(PROTOCOL_ERC20, getAddressProtocol(chainName, "PROTOCOL", "ERC20"));
+        assertEq(PROTOCOL_ERC20, getAddressProtocol(chainName, "ERC20"));
     }
 
     function test_getAccount() public view {
