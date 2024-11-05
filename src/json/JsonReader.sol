@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.22;
 
-import {Constants, console, stdJson} from "./Constants.sol";
+import {JsonBase, console, stdJson} from "./JsonBase.sol";
 
 using stdJson for string;
 
-abstract contract JsonReader is Constants {
+abstract contract JsonReader is JsonBase {
     function getChainName(string memory _chain) internal view returns (string memory name) {
         name = getJson(_chain).readString(".name");
     }
