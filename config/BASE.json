@@ -1,19 +1,17 @@
 {
-    "name": "ETHEREUM",
-    "chainId": 1,
-    "rpc_url": "https://mainnet.infura.io/v3/b9794ad1ddf84dfb8c34d6bb5dca2001",
-    "eid": 301011,
+    "name": "BASE",
+    "chainId": 8453,
+    "rpc_url": "https://mainnet.base.org",
+    "eid": 30184,
     "addresses": {
         "LAYERZERO": {
             "ENDPOINT_V2": "0x1a44076050125825900e736c501f859c50fE728c",
             "RECV_ULN302": "0x"
         },
         "OAPP": {
-            "OFT_ADAPTER": "0x0000000000000000000000000000000000000000"
+            "OFT": "0x0000000000000000000000000000000000000000"
         },
-        "PROTOCOL": {
-            "ERC20": "0x643C4E15d7d62Ad0aBeC4a9BD4b001aA3Ef52d66"
-        }
+        "PROTOCOL": {}
     },
     "accounts": {
         "SENDER": "0x36e83766531BA57a30373EFF061186619CA46FA1",
