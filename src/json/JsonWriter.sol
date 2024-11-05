@@ -12,7 +12,11 @@ abstract contract JsonWriter is JsonBase {
         string memory _contractName,
         address _address
     ) public {
-        vm.writeJson(vm.toString(_address), string.concat(config_path, _chain, ".json"), string.concat(".addresses.", _protocol, ".", _contractName));
+        vm.writeJson(
+            vm.toString(_address),
+            string.concat(config_path, _chain, ".json"),
+            string.concat(".addresses.", _protocol, ".", _contractName)
+        );
 
         console.log("Deployed address %s is written to %s", _address, _contractName);
     }
