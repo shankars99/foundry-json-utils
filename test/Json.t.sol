@@ -40,7 +40,7 @@ contract CounterTest is Test, LZUtils {
     }
 
     function test_OAPP() public view {
-        assertEq(OAPP_OFT_ADAPTER, getAddressProtocol(chainName, "OFT_ADAPTER"));
+        assertEq(OAPP_OFT_ADAPTER, getAddressOAPP(chainName, "OFT_ADAPTER"));
     }
 
     function test_getProtocolERC20() public view {
