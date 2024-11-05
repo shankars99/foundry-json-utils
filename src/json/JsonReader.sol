@@ -44,11 +44,7 @@ abstract contract JsonReader is Constants {
         protocol_address = json.readAddress(protocol_contract_path);
     }
 
-    function getAccount(string memory _chain, string memory _accountName)
-        internal
-        view
-        returns (address account)
-    {
+    function getAccount(string memory _chain, string memory _accountName) internal view returns (address account) {
         string memory json = getJson(_chain);
         string memory account_path = string.concat(".accounts.", _accountName);
 
