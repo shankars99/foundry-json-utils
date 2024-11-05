@@ -8,11 +8,11 @@ using stdJson for string;
 abstract contract JsonWriter is JsonBase {
     function writeDeployedAddress(
         string memory _chain,
-        string calldata _protocol,
-        string calldata _contractName,
+        string memory _protocol,
+        string memory _contractName,
         address _address
     ) public {
-        vm.writeJson(vm.toString(_address), getJson(_chain), string.concat(".", _protocol, ".", _contractName));
+        vm.writeJson(vm.toString(_address), string.concat(config_path, _chain, ".json"), string.concat(".addresses.", _protocol, ".", _contractName));
 
         console.log("Deployed address %s is written to %s", _address, _contractName);
     }
