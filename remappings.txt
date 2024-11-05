@@ -1,5 +1,6 @@
-@layerzerolabs/=lib/devtools/packages/
 @/=src/
-ds-test/=lib/layerzero-v2/lib/forge-std/lib/ds-test/src/
+ds-test/=lib/ds-test/
 forge-std/=lib/forge-std/src/
 layerzero-v2/=lib/layerzero-v2/
+@lzEvmV2/=lib/layerzero-v2/packages/layerzero-v2/evm/
+@layerzerolabs/=lib/devtools/packages/

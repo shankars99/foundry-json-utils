@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.22;
 
-import {JsonBase, console, stdJson} from "./JsonBase.sol";
+import {JsonBase, console, stdJson} from "./Base.sol";
 
 using stdJson for string;
 

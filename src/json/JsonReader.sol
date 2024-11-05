@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.22;
 
-import {JsonBase, console, stdJson} from "./JsonBase.sol";
+import {JsonBase, console, stdJson} from "./Base.sol";
 
 using stdJson for string;
 
@@ -40,6 +40,17 @@ abstract contract JsonReader is JsonBase {
     {
         string memory json = getJson(_chain);
         string memory protocol_contract_path = string.concat(".addresses.", _protocol, ".", _contractName);
+
+        protocol_address = json.readAddress(protocol_contract_path);
+    }
+
+    function getAddressOAPP(string memory _chain, string memory _protocol, string memory _contractName)
+        internal
+        view
+        returns (address protocol_address)
+    {
+        string memory json = getJson(_chain);
+        string memory protocol_contract_path = string.concat(".addresses.", _protocol, ".OAPP_", _contractName);
 
         protocol_address = json.readAddress(protocol_contract_path);
     }
