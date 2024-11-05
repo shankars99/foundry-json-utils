@@ -6,17 +6,18 @@ import {ExecutorBase, console} from "./Base.sol";
 import {ILayerZeroEndpointV2, Origin} from "@lzEvmV2/protocol/contracts/interfaces/ILayerZeroEndpointV2.sol";
 import {AddressCast} from "@lzEvmV2/protocol/contracts/libs/AddressCast.sol";
 import {GUID} from "@lzEvmV2/protocol/contracts/libs/GUID.sol";
+
 import {PacketV1Codec} from "@lzEvmV2/protocol/contracts/messagelib/libs/PacketV1Codec.sol";
+import {IReceiveUlnE2} from "@lzEvmV2/messagelib/contracts/uln/interfaces/IReceiveUlnE2.sol";
 
 import {Packet} from "@lzEvmV2/protocol/contracts/interfaces/ISendLib.sol";
 
-import {IReceiveUlnE2} from "@lzEvmV2/messagelib/contracts/uln/interfaces/IReceiveUlnE2.sol";
-
 import {JsonUtils} from "@/json/utils.sol";
 
-using AddressCast for address;
-using PacketV1Codec for Packet;
 abstract contract Sealer is ExecutorBase, JsonUtils {
+    using AddressCast for address;
+    using PacketV1Codec for Packet;
+
     function execute(uint64 _nonce, string calldata _srcChain, string calldata _dstChain, bytes memory _message)
         public
     {
@@ -27,7 +28,9 @@ abstract contract Sealer is ExecutorBase, JsonUtils {
         vm.stopBroadcast();
     }
 
-    function initialize(uint64 _nonce, string calldata _srcChain, string calldata _dstChain, bytes memory _message) public {
+    function initialize(uint64 _nonce, string calldata _srcChain, string calldata _dstChain, bytes memory _message)
+        public
+    {
         NONCE = _nonce;
         MESSAGE = _message;
 
@@ -38,7 +41,7 @@ abstract contract Sealer is ExecutorBase, JsonUtils {
         EID_DST = getEid(CHAIN_DST);
 
         OAPP_SRC = getAddressOAPP(CHAIN_SRC, "OAPP_SRC");
-        OAPP_DST = getAddressOAPP(CHAIN_SRC, "OAPP_SRC");
+        OAPP_DST = getAddressOAPP(CHAIN_SRC, "OAPP_DST");
 
         ENDPOINT_SRC = getAddressLZ(CHAIN_SRC, "ENDPOINT_V2");
         ENDPOINT_DST = getAddressLZ(CHAIN_DST, "ENDPOINT_V2");
@@ -48,24 +51,15 @@ abstract contract Sealer is ExecutorBase, JsonUtils {
     }
 
     function _commitVerification() internal {
-        Packet memory packet = Packet(
-            PACKET_VERSION,
-            NONCE,
-            EID_SRC,
-            OAPP_SRC.toBytes32(),
-            EID_DST,
-            OAPP_DST.toBytes32(),
-            _getGuid(),
-            MESSAGE
-        );
+        Packet memory packet = Packet(NONCE, EID_SRC, OAPP_SRC, EID_DST, OAPP_DST.toBytes32(), _getGuid(), MESSAGE);
 
-        bytes memory packetHeader = packet.header();
-        bytes32 payloadHash = Packet.payloadHash();
+        bytes memory packetHeader = packet.encodePacketHeader();
+        bytes32 payloadHash = keccak256(abi.encodePacked(packet.guid, packet.message));
 
         IReceiveUlnE2(RECVULN302_DST).commitVerification(packetHeader, payloadHash);
     }
 
     function _getGuid() internal view returns (bytes32 guid) {
-        guid = GUID.generate(NONCE, EID_SRC, OAPP_SRC, EID_DST, OAPP_DST);
+        guid = GUID.generate(NONCE, EID_SRC, OAPP_SRC, EID_DST, OAPP_DST.toBytes32());
     }
 }
