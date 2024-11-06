@@ -52,6 +52,16 @@ abstract contract JsonReader is JsonBase {
         protocol_address = getJson(_chain).readAddress(_path);
     }
 
+    function getAddress(string memory _chain, string memory _key, string memory _contractName)
+        internal
+        view
+        returns (address protocol_address)
+    {
+        string memory _path = string.concat(".addresses.", _key, ".", _contractName);
+
+        protocol_address = getJson(_chain).readAddress(_path);
+    }
+
     function getAccount(string memory _chain, string memory _accountName) internal view returns (address account) {
         string memory json = getJson(_chain);
         string memory account_path = string.concat(".accounts.", _accountName);

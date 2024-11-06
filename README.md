@@ -1,66 +1,28 @@
-## Foundry
+This repository contains 3 packages that aim to create foundry forked net testing, scripting, and json handling easier.
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
-
-Foundry consists of:
-
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
-
-## Documentation
-
-https://book.getfoundry.sh/
-
-## Usage
-
-### Build
-
-```shell
-$ forge build
+```bash
+forge install https://github.com/LayerZero-Labs/lz-foundry-utils.git --shallow
 ```
 
-### Test
+```solidity
+import {LZUtils} from "@lz-foundry-utils/LZUtils.sol";
 
-```shell
-$ forge test
+contract MyContract is LZUtils {
+    // your contract now has access to all the utilities provided by LZUtils
+}
 ```
 
-### Format
-
-```shell
-$ forge fmt
-```
-
-### Gas Snapshots
-
-```shell
-$ forge snapshot
-```
-
-### Anvil
-
-```shell
-$ anvil
-```
-
-### Deploy
-
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+1. [**json**](src/json/): Contains R/W support for `.json` files defined by the example schema in [`ETHEREUM.json`](config/ETHEREUM.json)".
+   - root keys are lower-cased, and "variables" are capitalized.
+   - `JsonUtils` contains scripts to quick-read `chainName`, `chainId`, `rpcUrl`, `eid`, `addresses`, and `accounts` from the json file.
+   - To make reading addresses easier, it is split into `LAYERZERO`, `OAPP`, and `PROTOCOL`, each having helper functions to read the addresses.
+   - Writing is also supported
+2. [**executor**](src/executor/): This gives you a functioning Executor that can spoof any address.
+   - Contains `Sealer` and `Executor` contracts that can be used to spoof any address for forknet-testing.
+   - Spoof it as the `LZExecutor` and it will submit transactions to the destination network.
+   - TODO:
+     - Read event logs from `broadcast/`
+     - Add functionality beyond `lzReceive()` (maybe use `devtools`)
+3. [**dvn**](src/dvn/): Gives you a functioning DVN that you can spoof as Google, Polyhedra, you name it.
+   - TODO:
+     - Implement it
